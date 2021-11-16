@@ -10,14 +10,111 @@ import re
 ### result. Name them according to the task ID as in the three
 ### examples below. Delete the three examples. The tasks you choose
 ### must be in the data/training directory, not data/evaluation.
-def solve_6a1e5592(x):
+
+
+'''
+###this one works!!!
+
+def solve_22eb0ac0(x):
+    for i in x:
+
+        if i[0] == i[-1]:
+            value = i[0]
+            item = i[1]
+            
+            index = [j for j, y in enumerate(i) if y==item]
+            #print(index)
+
+            for a in index:
+                i[a] = value
+
     return x
 
-def solve_b2862040(x):
+'''
+'''
+def solve_3bdb4ada(x):
+    for i in x:
+
+        #if i != 0:
+            #item = i[1]
+
+            index = [j for j, y in enumerate(i) if y != 0]
+            print(index)
+
+            #for a in index:
+             #   i[a] = value
+
     return x
 
-def solve_05269061(x):
+def solve_3bdb4ada(x):
+    a = 0
+    for j, y in enumerate(x):
+        for i in y:
+            if i != 0:
+                print(i)
+
+            #for a in index:
+             #   i[a] = value
+
     return x
+'''
+def solve_0d3d703e(x):
+    #for i in x:
+    x = np.where(x == 1, 5/4, x)
+
+    x = np.where(x == 2, 6/4, x)
+
+    x = np.where(x == 3, 4/4, x)
+    x = np.where(x == 4, 3/4, x)
+    x = np.where(x == 6, 2/4, x)
+    x = np.where(x == 8, 9/4, x)
+
+
+    x = np.where(x == 5, 1/4, x)
+    x = np.where(x == 9, 8/4, x)
+
+    x = x*4
+    x - x.astype(int)
+
+
+
+    '''
+    a = 0
+    x = x.flatten
+    print(x)
+    for i in x:
+
+        if i[a] == 2:
+            i[a] = 6
+        elif i[a] == 3:
+            i[a] = 4
+        elif i[a] == 8:
+            i[a] = 9
+        a +=1
+'''
+
+    return x
+
+
+
+
+
+
+#def solve_08ed6ac7(x):
+ #   H, W = x.shape
+  #  y = x.copy()
+    #gray, blue, red, green, yellow = color2num["gray"], color2num["blue"], color2num["red"], color2num["green"], color2num[
+    #    "yellow"]
+   # colors = [1, 2, 3, 4]
+    #colors_idx = 0
+    #for yy in range(H):
+     #   for xx in range(W):
+      #      if y[yy, xx] == 5:
+       #         for y_ in range(yy, H):
+        #            y[y_, xx] = colors[colors_idx]
+         #           #print(y)
+          #      colors_idx += 1
+    #return x
 
 
 def main():
