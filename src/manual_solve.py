@@ -4,6 +4,7 @@ import os, sys
 import json
 import numpy as np
 import re
+import math
 
 ### YOUR CODE HERE: write at least three functions which solve
 ### specific tasks by transforming the input x and returning the
@@ -58,64 +59,102 @@ def solve_3bdb4ada(x):
 
     return x
 '''
-def solve_0d3d703e(x):
-    #for i in x:
-    x = np.where(x == 1, 5/4, x)
-
-    x = np.where(x == 2, 6/4, x)
-
-    x = np.where(x == 3, 4/4, x)
-    x = np.where(x == 4, 3/4, x)
-    x = np.where(x == 6, 2/4, x)
-    x = np.where(x == 8, 9/4, x)
-
-
-    x = np.where(x == 5, 1/4, x)
-    x = np.where(x == 9, 8/4, x)
-
-    x = x*4
-    x - x.astype(int)
-
-
-
-    '''
-    a = 0
-    x = x.flatten
-    print(x)
-    for i in x:
-
-        if i[a] == 2:
-            i[a] = 6
-        elif i[a] == 3:
-            i[a] = 4
-        elif i[a] == 8:
-            i[a] = 9
-        a +=1
 '''
+###this one works!!!
+def solve_0d3d703e(x):
+    
+    x = np.where(x == 1, 5/math.pi, x)
+
+    x = np.where(x == 2, 6/math.pi, x)
+
+    x = np.where(x == 3, 4/math.pi, x)
+    x = np.where(x == 4, 3/math.pi, x)
+    x = np.where(x == 6, 2/math.pi, x)
+    x = np.where(x == 8, 9/math.pi, x)
+
+
+    x = np.where(x == 5, 1/math.pi, x)
+    x = np.where(x == 9, 8/math.pi, x)
+
+    x = (x*math.pi)//1
+
+
 
     return x
 
+'''
+'''
+def solve_ce4f8723(x):
+
+    h, w = x.shape
+    #bh = w
+    #print(h)
+    #print(w)
+    #print(bh)
+    y = x.ravel()
+    y1 = y[0:(w*w)]
+    y2 = y[(w*w+w):]
+    #print(y1)
+    #print(y2)
+    count_y1 = (y1 != 0).sum()
+    count_y2 = (y2 != 0).sum()
+    #print(count_y1)
+    #print(count_y2)
+    if count_y1 > count_y2:
+        value = 3
+
+        index = [j for j, a in enumerate(y1) if a != 0]
+
+        for b in index:
+            y1[b] = value
+        x = y1.reshape(w, -w)
+    else:
+        value = 3
+
+        index = [j for j, a in enumerate(y2) if a != 0]
 
 
+        for b in index:
+            y2[b] = value
+        x = y2.reshape(w, -w)
 
 
+    return x
+'''
 
-#def solve_08ed6ac7(x):
- #   H, W = x.shape
-  #  y = x.copy()
-    #gray, blue, red, green, yellow = color2num["gray"], color2num["blue"], color2num["red"], color2num["green"], color2num[
-    #    "yellow"]
-   # colors = [1, 2, 3, 4]
-    #colors_idx = 0
-    #for yy in range(H):
-     #   for xx in range(W):
-      #      if y[yy, xx] == 5:
-       #         for y_ in range(yy, H):
-        #            y[y_, xx] = colors[colors_idx]
-         #           #print(y)
-          #      colors_idx += 1
-    #return x
+def solve_ce4f8723(x):
 
+    h, w = x.shape
+
+    y = x.ravel()
+    y1 = y[0:(w*w)]
+    y2 = y[(w*w+w):]
+    y_total = (y1+y2)
+
+    value = 3
+
+    index = [j for j, a in enumerate(y_total) if a != 0]
+
+    for b in index:
+        y_total[b] = value
+    x = y_total.reshape(w, -w)
+
+    return x
+'''
+def solve_08ed6ac7(x):
+    H, W = x.shape
+    y = x.copy()
+    colors = [1, 2, 3, 4]
+    colors_idx = 0
+    for yy in range(H):
+        for xx in range(W):
+            if y[yy, xx] == 5:
+                for y_ in range(yy, H):
+                    y[y_, xx] = colors[colors_idx]
+                    print(y)
+                colors_idx += 1
+    return x
+'''
 
 def main():
     # Find all the functions defined in this file whose names are
