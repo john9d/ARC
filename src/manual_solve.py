@@ -32,33 +32,7 @@ def solve_22eb0ac0(x):
     return x
 
 '''
-'''
-def solve_3bdb4ada(x):
-    for i in x:
 
-        #if i != 0:
-            #item = i[1]
-
-            index = [j for j, y in enumerate(i) if y != 0]
-            print(index)
-
-            #for a in index:
-             #   i[a] = value
-
-    return x
-
-def solve_3bdb4ada(x):
-    a = 0
-    for j, y in enumerate(x):
-        for i in y:
-            if i != 0:
-                print(i)
-
-            #for a in index:
-             #   i[a] = value
-
-    return x
-'''
 '''
 ###this one works!!!
 def solve_0d3d703e(x):
@@ -85,48 +59,25 @@ def solve_0d3d703e(x):
 '''
 '''
 def solve_ce4f8723(x):
+    '''
+    #Using the ARC testing interface Task ce4f8723 shows a 9x4 array.
+    #Where there are two 4x4 arrays with coloured and black squares,
+    #separated by a 1x4 array to divide the two 4x4 arrays.
 
-    h, w = x.shape
-    #bh = w
-    #print(h)
-    #print(w)
-    #print(bh)
-    y = x.ravel()
-    y1 = y[0:(w*w)]
-    y2 = y[(w*w+w):]
-    #print(y1)
-    #print(y2)
-    count_y1 = (y1 != 0).sum()
-    count_y2 = (y2 != 0).sum()
-    #print(count_y1)
-    #print(count_y2)
-    if count_y1 > count_y2:
-        value = 3
+    #The results of each problem demonstrate that when overlay the two
+    #4x4 arrays, the resulting array shows only black squares in the
+    #resulting 4x4 array where both have them. Colouring all of the other
+    #squares in a different colour (green!)
 
-        index = [j for j, a in enumerate(y1) if a != 0]
+    '''
 
-        for b in index:
-            y1[b] = value
-        x = y1.reshape(w, -w)
-    else:
-        value = 3
-
-        index = [j for j, a in enumerate(y2) if a != 0]
-
-
-        for b in index:
-            y2[b] = value
-        x = y2.reshape(w, -w)
-
-
-    return x
-'''
-
-def solve_ce4f8723(x):
-
+    # First we need to define the shape of the array being assessed using .shape
     h, w = x.shape
 
+    # Then we need to flatten nDimension out the array to a 1D array
     y = x.ravel()
+
+    # As the problem shows
     y1 = y[0:(w*w)]
     y2 = y[(w*w+w):]
     y_total = (y1+y2)
@@ -141,18 +92,31 @@ def solve_ce4f8723(x):
 
     return x
 '''
-def solve_08ed6ac7(x):
-    H, W = x.shape
-    y = x.copy()
-    colors = [1, 2, 3, 4]
-    colors_idx = 0
-    for yy in range(H):
-        for xx in range(W):
-            if y[yy, xx] == 5:
-                for y_ in range(yy, H):
-                    y[y_, xx] = colors[colors_idx]
-                    print(y)
-                colors_idx += 1
+def solve_6cf79266(x):
+    def get_closed_area(arr):
+        # depth first search
+        H, W = arr.shape
+        Dy = [0, -3, 0, 3]
+        Dx = [3, 0, -3, 0]
+        arr_padded = np.pad(arr, ((3, 3), (3, 3)), "constant", constant_values=0)
+        searched = np.zeros(arr_padded.shape, dtype=bool)
+        searched[0, 0] = True
+        q = [(0, 0)]
+        while q:
+            y, x = q.pop()
+            for dy, dx in zip(Dy, Dx):
+                y_, x_ = y + dy, x + dx
+                if not 0 <= y_ < H + 2 or not 0 <= x_ < W + 2:
+                    continue
+                if not searched[y_][x_] and arr_padded[y_][x_] == 0:
+                    q.append((y_, x_))
+                    searched[y_, x_] = True
+        res = searched[3:-3, 3:-3]
+        res |= arr == 0
+        return ~res
+
+    #x = x.copy()
+    x[get_closed_area(x)] = 5
     return x
 '''
 
