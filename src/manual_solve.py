@@ -5,6 +5,7 @@ import json
 import numpy as np
 import re
 import math
+from scipy import stats
 
 ### YOUR CODE HERE: write at least three functions which solve
 ### specific tasks by transforming the input x and returning the
@@ -57,19 +58,19 @@ def solve_0d3d703e(x):
     return x
 
 '''
-'''
+
 def solve_ce4f8723(x):
     '''
-    #Using the ARC testing interface Task ce4f8723 shows a 9x4 array.
-    #Where there are two 4x4 arrays with coloured and black squares,
-    #separated by a 1x4 array to divide the two 4x4 arrays.
+    ########################### SOLUTION No.3 ###############################
+    Using the ARC testing interface Task ce4f8723 shows a 9x4 array. Where there
+    are two 4x4 arrays with coloured and black squares, separated by a 1x4 array
+    to divide the two 4x4 arrays.
 
-    #The results of each problem demonstrate that when overlay the two
-    #4x4 arrays, the resulting array shows only black squares in the
-    #resulting 4x4 array where both have them. Colouring all of the other
-    #squares in a different colour (green!)
-
+    The results of each problem demonstrate that when overlay the two 4x4 arrays,
+    the resulting array shows only black squares in the resulting 4x4 array where
+    both have them. Colouring all of the other squares in a different colour (green!)
     '''
+
 
     # First we need to define the shape of the array being assessed using .shape
     h, w = x.shape
@@ -91,34 +92,118 @@ def solve_ce4f8723(x):
     x = y_total.reshape(w, -w)
 
     return x
-'''
-def solve_6cf79266(x):
-    def get_closed_area(arr):
-        # depth first search
-        H, W = arr.shape
-        Dy = [0, -3, 0, 3]
-        Dx = [3, 0, -3, 0]
-        arr_padded = np.pad(arr, ((3, 3), (3, 3)), "constant", constant_values=0)
-        searched = np.zeros(arr_padded.shape, dtype=bool)
-        searched[0, 0] = True
-        q = [(0, 0)]
-        while q:
-            y, x = q.pop()
-            for dy, dx in zip(Dy, Dx):
-                y_, x_ = y + dy, x + dx
-                if not 0 <= y_ < H + 2 or not 0 <= x_ < W + 2:
-                    continue
-                if not searched[y_][x_] and arr_padded[y_][x_] == 0:
-                    q.append((y_, x_))
-                    searched[y_, x_] = True
-        res = searched[3:-3, 3:-3]
-        res |= arr == 0
-        return ~res
 
-    #x = x.copy()
-    x[get_closed_area(x)] = 5
+
+def solve_e26a3af2(x):
+    '''
+    ########################### SOLUTION No.4 ###############################
+    Using the ARC testing interface Task e26a3af2 shows a varying NxM arrays.
+    Where some of the arrays N = M. In each of the tasks, there is either a
+    vertical or horizontal lines of varying width containing primarily 3 or 4
+    colours (numbers), with a random placement of any colour throughout. Each
+    task solution clears out the random colours and leaves a neat 3 or 4 colour
+    lines. The test grid is 5 colours in a horizontal arrangement.
+
+    To solve the task we will enumerate the array and identify the mode colour
+    in each row of the array, inorder to create a new NxM array in clean of any
+    random colours. This will work with the horizontally aligned colours easily,
+    however we will need to transpose the array for the vertically aligned colours.
+    An if statement that will assess if the mode is greater than 1/2 of the array
+    width (as all arrays have 3 or more colours) will be able to ensure the mode
+    and array will be correctly reformed.
+
+    '''
+
+
+    # We need to create an empty list for mode colour in each row
+    mode = []
+
+    # We need to create an empty list for maximum number of colours in each row
+    # This will allow us to verify if we need to transpose the array
+    total = []
+
+    # Gather the height and width of the array so we can create the new array correctly
+    h, w = x.shape
+
+    # We will enumerate x to identify the the mode colour in each row
+    for i, j in enumerate(x):
+
+        # Create a list of each value and count of each to identify the mode
+        vals, counts = np.unique(x[i], return_counts=True)
+
+        # Capture the value tha made the colour the mode
+        total = max(counts)
+
+        # Create an location index for the value which is the mode
+        index = np.argmax(counts)
+
+        # Store the mode in the row
+        c = vals[index]
+
+        # Append the mode to the global list
+        mode = np.append(mode, [c], axis=0)
+
+    # We will now transpose the array and complete the same tasks as above
+    # We need to create an empty list for mode colour in each row
+    x_T = x.T
+
+    # We need to create an empty list for maximum number of colours in each row
+    # This will allow us to verify if we need to transpose the array
+    mode_T = []
+
+    # Gather the height and width of the array so we can create the new array correctly
+    h_T, w_T = x_T.shape
+
+    # We will enumerate x to identify the the mode colour in each row
+    for i_T, j_T in enumerate(x_T):
+
+        # Create a list of each value and count of each to identify the mode
+        vals_T, counts_T = np.unique(x_T[i_T], return_counts=True)
+
+        # Create an location index for the value which is the mode
+        index_T = np.argmax(counts_T)
+
+        # Store the mode in the row
+        c_T = vals_T[index_T]
+
+        # Append the mode to the global list
+        mode_T = np.append(mode_T, [c_T], axis=0)
+
+    # Create an if statement to verify if we are working with a vertical task
+    if total < w/2:
+        '''The mode is less than half the count so we will use the transposed array'''
+        # Create an empty numpy array
+        f_T = np.array([])
+
+        # Iterate through the global mode list created
+        for i in mode_T:
+            # Append each mode value as a new row and multiply it by the width of
+            # of the original transposed array
+            f_T = np.append(f_T, [i] * w_T, axis=0)
+
+        # Reshape the new array to the original transposed array
+        r = f_T.reshape(h_T, w_T)
+
+        # Transpose the new array back to its original shape
+        x = r.T
+
+    # Else we are now working with a horizontal type task
+    else:
+        '''The mode is more than half the count so we will use the normal array'''
+        # Create an empty numpy array
+        f = np.array([])
+
+        # Iterate through the global mode list created
+        for i in mode:
+
+            # Append each mode value as a new row and multiply it by the width of
+            # of the original array
+            f = np.append(f, [i] * w, axis=0)
+
+        # Reshape the new array to the original array
+        x = f.reshape(h, w)
+
     return x
-'''
 
 def main():
     # Find all the functions defined in this file whose names are
