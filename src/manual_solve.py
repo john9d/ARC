@@ -1,5 +1,41 @@
 #!/usr/bin/python
 
+'''
+NUI Galway CT5132/CT5148 Programming and Tools for AI (James McDermott)
+
+Solution for Assignment 3:  Hand-coding solutions for the Abstraction
+                            and Reasoning Corpus
+
+By writing my name below and submitting this file, I/we declare that
+all additions to the provided skeleton file are my/our own work, and
+that I/we have not seen any work on this assignment by another
+student/group.
+
+Student name(s):    John Doyle
+Student ID(s):      21230978
+GitHub:             https://github.com/john9d/ARC
+
+Summary of the ARC Assignment:
+
+The solve_* solutions completed below were completed using basic python functions
+and no machine learning techniques, with the majority using only the built in Python
+functions. Such as for loops, if else statements and enumerate. The math library was
+used for an irrational number and the numpy library for mainly array specific functions.
+
+Most of the solve_* solution started with a loop pass through the array and getting the
+index of specific number required to solve the task. Then mainly replacing this with the
+correct number, some requiring to reshape. Where possible the solve_* solutions tried to
+use techniques that would help solve the solution in different size array that the tasks
+shown.
+
+Below the term "colour" is used primarily, as the ARC testing_interface.html was used
+to identify/describe the task and its solution.
+
+
+'''
+
+
+
 import os, sys
 import json
 import numpy as np
@@ -41,7 +77,7 @@ def solve_22eb0ac0(x):
             item = i[1]
 
             # Enumerate through the row and create an index of the non-matching values
-            index = [j for j, y in enumerate(i) if y==item]
+            index = [j for j, y in enumerate(i) if y == item]
 
             # We will now loop through the index list so we can replace this values
             for a in index:
@@ -324,6 +360,93 @@ def solve_9ecd008a(x):
     x = answer.reshape(3, -3)
 
     return x
+
+def solve_178fcbfb(x):
+    '''
+    ########################### SOLUTION No.6 ###############################
+    Using the ARC testing interface Task 178fcbfb shows a number of NxM arrays
+    where N is sometimes equal to M. There are 3 colours red, green and
+    blue in a number of squares in each array. The solution for each task shows
+    that the green and blue squares fill their row completely with their colour.
+    Then the the red is filled in vertically, under-lapping the green and blue
+    squares.
+
+
+    To solve the task we will enumerate the array and identify which rows contain
+    a black (zero) square by calculating the length of the row with a non-black. If
+    the row a non-black square, we will pass this into another loop to enumerate for
+    the value of the colour in the row. If not red (2) we will then enumerate the row
+    to replace all the black (0) squares in with its correct colour. After this we
+    will redo the above by transposing the array and look for the red (2) squares
+    only to replace the black (0) values with red.
+    '''
+    # First we need to get the shape of the array to sense check which rows need to
+    # be passed into the loop to fill out the colour in the row
+    h, w = x.shape
+
+    # Initiate loop through the array
+    for i in x:
+
+        # We will set the value for the black square
+        black = 0
+
+        # We will enumerate to identify the length of each row that has a black square
+        is_black = [j for j, y in enumerate(i) if y == black]
+
+        # Now create an if statement to pass the row into the next loop if contains a
+        # black square
+        if len(is_black) != w:
+
+            # We will now enumerate to identify the count of the black squares
+            non_black = [j for j, y in enumerate(i) if y != black]
+
+            # We will now store the colour value
+            colour = i[non_black]
+
+            # We will now sense check that this row does not contain red (2)
+            if colour != 2:
+
+                # We will now enumerate to identify the index of the black squares
+                zero_index = [j for j, y in enumerate(i) if y == black]
+
+                # We will now loop through to replace the black squares
+                for b in zero_index:
+
+                    # Replacing the values with the colour
+                    i[b] = colour
+
+    # Initiate loop through the transposed array
+    for i in x.T:
+
+        # We will set the value for the black square
+        black = 0
+
+        # We will enumerate to identify the length of each row that has a black square
+        is_black = [j for j, y in enumerate(i) if y == black]
+
+        # Now create an if statement to pass the row into the next loop if contains a
+        # black square
+        if len(is_black) != w:
+
+            # We will now enumerate to identify the count of the black squares
+            non_black = [j for j, y in enumerate(i) if y != black]
+
+            # We will now store the colour value
+            colour = i[non_black]
+
+            # We will need to only pass in the row with the red (2) value
+            if 2 in colour:
+
+                # We will now enumerate to identify the count of the black squares
+                zero_index = [j for j, y in enumerate(i) if y == black]
+
+                # We will now loop through to replace the black squares
+                for b in zero_index:
+
+                    # Replacing the values with the red (2)
+                    i[b] = 2
+    return x
+
 
 def main():
     # Find all the functions defined in this file whose names are
