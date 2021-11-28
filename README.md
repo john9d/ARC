@@ -1,6 +1,6 @@
 # Manually Solving The Abstraction and Reasoning Corpus (ARC)
 
-This is a fork from the ARC GitHub repository, attempting to manually solve 3 or more of the tasks by using Python. The tasks can be completed using any programming techniques.
+This is a fork from the ARC GitHub repository, attempting to manually solve 3 or more of the tasks by using a programming language. Any of the tasks can be completed using any programming technique. All the solutions solved within are completed using basic python functions and no machine learning techniques.  
 
 
 *"ARC can be seen as a general artificial intelligence benchmark, as a program synthesis benchmark, or as a psychometric intelligence test. It is targeted at both humans and artificially intelligent systems that aim at emulating a human-like form of general fluid intelligence."*
